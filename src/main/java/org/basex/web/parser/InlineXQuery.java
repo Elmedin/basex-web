@@ -11,6 +11,7 @@ import org.basex.web.xquery.BaseXClient;
 
 /**
  * Parses and substitutes inline XQuery with a query result.
+ *
  * @author BaseX Team 2005-11, BSD License
  * @author Michael Seiferle <ms@basex.org>
  */
