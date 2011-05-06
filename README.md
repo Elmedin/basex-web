@@ -10,7 +10,7 @@ Requirements
 News
 ----
 For the next few days you will need the latest BaseX 6.6.2-Snapshot from our [github](https://github.com/BaseXdb/basex),
-it is not yet available via maven. Once cloned, `cd basex`and then `mvn install`, now you are set.
+it is not yet available via maven. `git clone `git://github.com/BaseXdb/basex.git`, once cloned, `cd basex`and then `mvn install`, now you are set.
 
 Usage
 -----
