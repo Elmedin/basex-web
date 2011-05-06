@@ -7,6 +7,11 @@ Requirements
 [Java 1.6](http://java.com/getjava/index.jsp "Download Free Java Software") and [Maven](http://maven.apache.org/ "Maven - 
     Welcome to Apache Maven") are highly recommended to run the project. 
 
+News
+----
+For the next few days you will need the latest BaseX 6.6.2-Snapshot from our [github](https://github.com/BaseXdb/basex),
+it is not yet available via maven. Once cloned, `cd basex`and then `mvn install`, now you are set.
+
 Usage
 -----
 To get the demo application up and running 
