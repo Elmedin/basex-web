@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.basex.query.item.map.Map;
 import org.basex.web.parser.InlineXQuery;
 import org.basex.web.servlet.PrepareParamsServlet;
 
@@ -24,8 +25,8 @@ public class Html extends PrepareParamsServlet {
 
     @Override
     public final void get(final HttpServletRequest request,
-            final HttpServletResponse response) throws ServletException,
-            IOException {
+            final HttpServletResponse response, final Map get, final Map post)
+    throws ServletException, IOException {
         response.setContentType("text/html");
 
         final String filename = request.getRequestURI().toString();
@@ -35,7 +36,7 @@ public class Html extends PrepareParamsServlet {
         }
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write(
-                new InlineXQuery(fPath + filename, pr()).parse());
+                new InlineXQuery(fPath + filename).eval(get, post));
     }
 
     /**

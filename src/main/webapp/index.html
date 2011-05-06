@@ -74,9 +74,9 @@
       <article style="clear:both" class="example">
         <hr />
         <h2>Reading <code>GET</code> &amp; <code>POST</code> Parameters</h2>
-        <pre>&lt;?xq map:get($_GET,&#x27;index&#x27;)?&gt;</pre>
+        <pre>&lt;?xq $GET(&#x27;index&#x27;)?&gt;</pre>
         <br />
-        <?xq let $in := map:get($_GET,'index')
+        <?xq let $in := $GET('index')
          return if( $in ) then <code>{concat("Gives", " ", $in)}</code> else
           <a href="?index=hello world">Click here to reload the page and set a GET Parameter</a>
         ?>
