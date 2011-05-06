@@ -77,7 +77,7 @@
         <pre>&lt;?xq $GET(&#x27;index&#x27;)?&gt;</pre>
         <br />
         <?xq let $in := $GET('index')
-         return if( $in ) then <code>{concat("Gives", " ", $in)}</code> else
+         return if( exists($in) ) then <code>{concat("Gives", " ", data($in))}</code> else
           <a href="?index=hello world">Click here to reload the page and set a GET Parameter</a>
         ?>
         
