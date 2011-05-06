@@ -13,9 +13,9 @@ import org.basex.web.servlet.PrepareParamsServlet;
 
 /**
  * Parses HTML files with inline XQuery.
+ *
  * @author BaseX Team 2005-11, BSD License
  * @author Michael Seiferle <ms@basex.org>
- *
  */
 public class Html extends PrepareParamsServlet {
 

@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class has been here for testing purposes and will be deleted soon.
+ *
  * @author BaseX Team 2005-11, BSD License
  * @author Michael Seiferle <ms@basex.org>
- *
  */
 public class Dispatcher extends HttpServlet {
 
