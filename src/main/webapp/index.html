@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>Inline XQuery in your Browser </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+	<link rel="stylesheet" href="css/style.css?v=2">
+	<link rel="stylesheet" media="handheld" href="css/handheld.css?v=2">
+	<script src="js/libs/modernizr-1.7.min.js"></script>
+</head>
+<body>
+	<div id="container">
+		<header>
+      <h1>Inline XQuery in your Browser</h1>
+		</header>
+
+		<div id="main" role="main">
+
+      <article class="example">
+        <h2>Getting started</h2>
+        <p>to get you up and running try the following:
+        <pre>&lt;?xq 1 to 10?&gt;</pre>
+        <strong>Gives</strong><br />
+        <?xq 1 to 10?><br />
+        Pretty nice, but not too useful so far.<br />
+        What it does is replace the part between the &lt;?xq &hellip; ?&gt; with the evaluated result of XQuery.<br />
+        Sure enough XQuery is a full-fledged programming language, but comes to full potential when used in conjunction with databases.
+        So here we go:
+      </article>
+      <hr />
+      <article class="example">
+        <h2>Opening Databases</h2>
+        
+       <div class="subcolumns">
+         <div class="left"> <pre>
+&lt;ul&gt;
+&lt;?xq 
+  for $city in doc(&#x27;http://files.basex.org/xml/factbook.xml&#x27;)//city
+    let $name := $city/name[1]/text()
+    where starts-with($name, &#x27;Kr&#x27;)
+  return &lt;li&gt;{$name}&lt;/li&gt;
+?&gt;
+&lt;/ul&gt;
+          
+        </pre>
+        <p>
+        Yes you saw right, we directly open a XML resource by it&#x27;s URL &ndash; sure this takes some time. So let&#x27;s try it local.
+        Download the file and create a local database named <code>factbook</code> 
+        using the <a href="http://basex.org/products/gui/" title="BaseX | GUI">BaseX GUI</a>.
+        </p>
+        <p>
+        Then change the doc part to: <code>doc('factbook')</code> to stop the database from recreating the database anytime
+        you open your website.</p>
+              <br />
+        </div>
+        <div class="right">
+        <strong>Yields</strong><br />
+        <ul><?xq 
+      for $city in doc('http://localhost:8080/resource/factbook.xml')//city
+			  let $name := $city/name[1]/text()
+			  where starts-with($name, 'Kr')
+      return <li>{$name}</li>
+        ?>
+        </ul></div></div>
+      </article>
+      <article style="clear:both" class="example">
+        <hr />
+        <h2>Reading <code>GET</code> &amp; <code>POST</code> Parameters</h2>
+        <pre>&lt;?xq map:get($_GET,&#x27;index&#x27;)?&gt;</pre>
+        <br />
+        <?xq let $in := map:get($_GET,'index')
+         return if( $in ) then <code>{concat("Gives", " ", $in)}</code> else
+          <a href="?index=hello world">Click here to reload the page and set a GET Parameter</a>
+        ?>
+        
+      </article>
+
+      <hr />      
+		</div>
+
+		<footer>
+
+		</footer>
+	</div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.5.1.min.js"%3E%3C/script%3E'))</script>
+	<script src="js/plugins.js"></script>
+	<script src="js/script.js"></script>
+</body>
+</html>
