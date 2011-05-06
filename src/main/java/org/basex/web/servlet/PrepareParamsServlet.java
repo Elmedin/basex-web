@@ -1,160 +1,96 @@
 package org.basex.web.servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.basex.query.QueryException;
 import org.basex.query.item.Atm;
+import org.basex.query.item.Item;
+import org.basex.query.item.Seq;
 import org.basex.query.item.Str;
+import org.basex.query.item.map.Map;
+import org.basex.util.Token;
 
 /**
- * This class handles GET or POST requests and prepares a HashMap with the
- * respective values. It then calls the
- * {@link #get(HttpServletRequest, HttpServletResponse)} method of its
- * imeplementing class.
+ * This class handles GET or POST requests and prepares a Map with the
+ * respective values.
  *
  * @author BaseX Team 2005-11, BSD License
  * @author Michael Seiferle <ms@basex.org>
- *
  */
 public abstract class PrepareParamsServlet extends HttpServlet {
-    /** Version. */
-    private static final long serialVersionUID = 8548004356377035911L;
-    /** The GET map. */
-    private final HashMap<String, String> getVars =
-            new HashMap<String, String>();
-    /** The POST array. */
-    private final HashMap<String, String> postVars =
-            new HashMap<String, String>();
-    /**
-     * the web root: *TODO* this path might be configurable in future version.
-     */
-    protected static String fPath = "src/main/webapp";
+  /** Version. */
+  private static final long serialVersionUID = 8548004356377035911L;
+  /**
+   * the web root: *TODO* this path might be configurable in future version.
+   */
+  protected static String fPath = "src/main/webapp";
 
-    /**
-     * Returns the GET & POST maps. *TODO* implement $_POST
-     *
-     * @return XQuery String with the supplied data.
-     */
-    protected final String pr() {
-        org.basex.query.item.map.Map get = org.basex.query.item.map.Map.EMPTY;
-        int count = getVars.size();
-        try {
+  @Override
+  protected final void doGet(final HttpServletRequest req,
+      final HttpServletResponse resp) throws IOException, ServletException {
+    final Map get = getMap(req);
+    final Map post = getPost(req);
+    get(req, resp, get, post);
+  }
 
-            for (Entry<String, String> entr : getVars.entrySet()) {
-                System.out.println(entr.getValue());
-                get = get.insert(Str.get(entr.getKey()),
-                        Atm.get(entr.getValue()), null);
-                if (count-- == 1) {
-                    break;
-                }
-            }
-        } catch (QueryException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        System.err.println(get.toString());
-        return "";
+  /**
+   * Populates the POST variables map.
+   * @param req request
+   * @return POST map
+   */
+  @SuppressWarnings("unused")
+  private Map getPost(final HttpServletRequest req) {
+    return Map.EMPTY;
+  }
+
+  /**
+   * Populates the GET variables map.
+   * @param req request
+   * @return GET map
+   */
+  private Map getMap(final HttpServletRequest req) {
+    @SuppressWarnings("unchecked")
+    java.util.Map<String, String[]> pars = req.getParameterMap();
+
+    Map get = Map.EMPTY;
+    for(final Entry<String, String[]> e : pars.entrySet()) {
+      final Str key = Str.get(e.getKey());
+      final String[] v = e.getValue();
+      final Item[] val = new Item[v.length];
+      for(int i = val.length; --i >= 0;) val[i] = new Atm(Token.token(v[i]));
+      try {
+        get = get.insert(key, Seq.get(val, val.length), null);
+      } catch(final QueryException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
     }
+    return get;
+  }
 
-    @Override
-    protected final void doGet(final HttpServletRequest req,
-            final HttpServletResponse resp) throws IOException,
-            ServletException {
-        doGetOrPost(req, resp, getVars);
-        get(req, resp);
-    }
+  @Override
+  public final void doPost(final HttpServletRequest req,
+      final HttpServletResponse resp) throws IOException {
+    // TODO
+  }
 
-    /**
-     * Fills the right map with its data.
-     * @param req
-     *            request.
-     * @param resp
-     *            respone (ignored).
-     * @param map
-     *            the map to fill.
-     */
-    private void doGetOrPost(final HttpServletRequest req,
-            final HttpServletResponse resp, final HashMap<String, String> map) {
-        emptyMaps();
-
-        @SuppressWarnings("unchecked")
-        Map<String, String[]> pars = req.getParameterMap();
-        for (String key : pars.keySet()) {
-            String[] vals = req.getParameterValues(key);
-            if (null != vals) {
-                System.out.println("Var: " + vals[0]);
-                map.put(key, join(vals, ","));
-            }
-        }
-
-    }
-
-    /**
-     * Resets the parameter maps.
-     */
-    private void emptyMaps() {
-        getVars.clear();
-        postVars.clear();
-    }
-
-    @Override
-    public final void doPost(final HttpServletRequest req,
-            final HttpServletResponse resp) throws IOException {
-        doGetOrPost(req, resp, postVars);
-    }
-
-    /**
-     * Performs the actual get, this is needed to allow
-     * {@link PrepareParamsServlet} collecting the parameters before delegating
-     * the actual get or post of the implementation.
-     * @param req
-     *            request
-     * @param resp
-     *            response object
-     * @throws ServletException
-     *             servlet
-     * @throws IOException
-     *             io
-     */
-    public abstract void get(final HttpServletRequest req,
-            final HttpServletResponse resp) throws ServletException,
-            IOException;
-
-    /**
-     * Joins a String with delimiter.
-     *
-     * @param strs
-     *            String array
-     * @param delim
-     *            Delimiter
-     * @return the joined String
-     */
-    private String join(final String[] strs, final String delim) {
-        final StringBuilder sb = new StringBuilder();
-        if (strs.length > 1) {
-            sb.append("(");
-        }
-        for (int p = 0; p < strs.length; p++) {
-            sb.append('"');
-            sb.append(strs[p]);
-            sb.append('"');
-            if (p == strs.length - 1) {
-                break;
-            }
-            sb.append(",");
-        }
-        if (strs.length > 1) {
-            sb.append(")");
-        }
-
-        return sb.toString();
-    }
+  /**
+   * Performs the actual get, this is needed to allow
+   * {@link PrepareParamsServlet} collecting the parameters before delegating
+   * the actual get or post of the implementation.
+   * @param req request
+   * @param resp response object
+   * @param get GET map
+   * @param post POST map
+   * @throws ServletException servlet
+   * @throws IOException io
+   */
+  public abstract void get(final HttpServletRequest req,
+      final HttpServletResponse resp, final Map get, final Map post)
+  throws ServletException, IOException;
 }

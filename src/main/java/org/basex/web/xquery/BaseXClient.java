@@ -4,11 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
-import org.basex.core.BaseXException;
 import org.basex.core.Context;
-import org.basex.core.cmd.XQuery;
+import org.basex.query.QueryException;
 import org.basex.query.QueryProcessor;
+import org.basex.query.item.map.Map;
 
 /**
  * Provides static methods to access BaseX.
@@ -28,13 +27,12 @@ public final class BaseXClient {
     /**
      *This Method reads and returns the result of a whole query.
      *
-     *@param f
-     *           the filename
-     *@param prepend
-     *           get & post params
+     *@param f the filename
+     * @param get GET map
+     * @param post POST map
      *@return the query result
      */
-    public static String query(final String f, final String prepend) {
+    public static String query(final String f, final Map get, final Map post) {
 
         BufferedReader br = null;
         try {
@@ -45,11 +43,10 @@ public final class BaseXClient {
         }
         final StringBuffer sb = new StringBuffer();
         try {
-            while (br != null && br.ready()) {
+            while (br.ready()) {
                 sb.append(br.readLine());
                 sb.append(" ");
             }
-            
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -61,26 +58,25 @@ public final class BaseXClient {
                 e.printStackTrace();
             }
         }
-        return exec(sb.toString(), prepend);
+        return exec(sb.toString(), get, post);
 
     }
 
     /**
      *Executes a query string.
-     *     *@param data
-     *           the query string
-     *@param prepend
-     *           get & post params
+     * @param qu query string
+     * @param get GET map
+     * @param post POST map
      *@return the query result.
      */
-    public static String exec(final String data, final String prepend) {
+    public static String exec(final String qu, final Map get, final Map post) {
         try {
-            final String query = String.format("%s\n%s", prepend, data);
-            System.err.format("===\n%s\n=====", query);
-            QueryProcessor qp = new QueryProcessor(query, CTX);
-            //qp.bind("", )
-            return new XQuery(query).execute(CTX);
-        } catch (BaseXException e) {
+            System.err.format("===\n%s\n=====", qu);
+            QueryProcessor qp = new QueryProcessor(qu, CTX);
+            qp.bind("GET", get);
+            qp.bind("POST", post);
+            return qp.execute().toString();
+        } catch (QueryException e) {
             return "<div class=\"error\">" + e.getMessage() + "</div>";
         }
     }

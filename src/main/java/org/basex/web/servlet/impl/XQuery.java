@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.basex.query.item.map.Map;
 import org.basex.web.servlet.PrepareParamsServlet;
 import org.basex.web.xquery.BaseXClient;
 
@@ -24,8 +25,8 @@ public class XQuery extends PrepareParamsServlet {
 
     @Override
     public final void get(final HttpServletRequest request,
-            final HttpServletResponse response) throws ServletException,
-            IOException {
+            final HttpServletResponse response, final Map get, final Map post)
+    throws ServletException, IOException {
         response.setContentType("text/html");
 
         final String filename = request.getRequestURI().toString();
@@ -34,7 +35,8 @@ public class XQuery extends PrepareParamsServlet {
             throw new ServletException("File " + filename + " not found");
         }
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(BaseXClient.query(fPath + filename, pr()));
+        response.getWriter().write(BaseXClient.query(fPath + filename,
+            get, post));
     }
 
     /**
