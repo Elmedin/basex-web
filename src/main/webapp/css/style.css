@@ -118,7 +118,10 @@ h1 {
   background:#cf1;
   display:block;
 }
-
+code.result {
+	background-color:#cf1;
+	padding:2px;
+}
 .example {
   clear:both;
   

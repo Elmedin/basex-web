@@ -23,66 +23,38 @@
 		</header>
 
 		<div id="main" role="main">
-
+		  <article class="example">
+    <h1>Welcome</h1>
+		<p>Welcome text :-) 
+			Why this is cool?
+			<ul>
+				<li>Either <strong>XQuery mixed-in</strong> or</li>
+				<li><strong>Purely functional</strong></li>
+				<li>Stay inside the <strong>XML world</strong> from start to beginning, always produce valid (X)HTML</li>
+				<li>Strong <strong>full-text</strong> capabilities</li>
+				<li>Open remote XML resources and process them on your server</li>
+				<li>Full <strong>XQuery Update</strong> support</li>
+				</ul>
+			</p>
+</article>
+<hr />
       <article class="example">
-        <h2>Getting started</h2>
-        <p>to get you up and running try the following:
+        <h2>Primer</h2>
+        <p>we won&#x27;t start with &quot;hello world&quot; here &ndash; as this would be too <em>trivial</em>!<br />
+				Let us start by counting from <code>1 to 10</code>:
+				</p>
         <pre>&lt;?xq 1 to 10?&gt;</pre>
         <strong>Gives</strong><br />
-        <?xq 1 to 10?><br />
+<code class="result">
+        <?xq 1 to 10?>
+</code><br /><br />
         Pretty nice, but not too useful so far.<br />
         What it does is replace the part between the &lt;?xq &hellip; ?&gt; with the evaluated result of XQuery.<br />
         Sure enough XQuery is a full-fledged programming language, but comes to full potential when used in conjunction with databases.
         So here we go:
       </article>
       <hr />
-      <article class="example">
-        <h2>Opening Databases</h2>
-        
-       <div class="subcolumns">
-         <div class="left"> <pre>
-&lt;ul&gt;
-&lt;?xq 
-  for $city in doc(&#x27;http://files.basex.org/xml/factbook.xml&#x27;)//city
-    let $name := $city/name[1]/text()
-    where starts-with($name, &#x27;Kr&#x27;)
-  return &lt;li&gt;{$name}&lt;/li&gt;
-?&gt;
-&lt;/ul&gt;
-          
-        </pre>
-        <p>
-        Yes you saw right, we directly open a XML resource by it&#x27;s URL &ndash; sure this takes some time. So let&#x27;s try it local.
-        Download the file and create a local database named <code>factbook</code> 
-        using the <a href="http://basex.org/products/gui/" title="BaseX | GUI">BaseX GUI</a>.
-        </p>
-        <p>
-        Then change the doc part to: <code>doc('factbook')</code> to stop the database from recreating the database anytime
-        you open your website.</p>
-              <br />
-        </div>
-        <div class="right">
-        <strong>Yields</strong><br />
-        <ul><?xq 
-      for $city in doc('http://localhost:8080/resource/factbook.xml')//city
-			  let $name := $city/name[1]/text()
-			  where starts-with($name, 'Kr')
-      return <li>{$name}</li>
-        ?>
-        </ul></div></div>
-      </article>
-      <article style="clear:both" class="example">
-        <hr />
-        <h2>Reading <code>GET</code> &amp; <code>POST</code> Parameters</h2>
-        <pre>&lt;?xq $GET(&#x27;index&#x27;)?&gt;</pre>
-        <br />
-        <?xq let $in := $GET('index')
-         return if( exists($in) ) then <code>{concat("Gives", " ", data($in))}</code> else
-          <a href="?index=hello world">Click here to reload the page and set a GET Parameter</a>
-        ?>
-        
-      </article>
-
+Read on the learn more about <a href="databases.html" title="Handling Databases">handling and querying databases</a>.
       <hr />      
 		</div>
 

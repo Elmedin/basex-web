@@ -1,6 +1,7 @@
 package org.basex.web.parser;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,13 +16,13 @@ import org.basex.web.xquery.BaseXClient;
  */
 public final class InlineXQuery {
   /** GET/Post Params. */
-  private final String file;
+  private final File file;
 
   /**
    * Parses and executes inline xquery.
    * @param f file to query
    */
-  public InlineXQuery(final String f) {
+  public InlineXQuery(final File f) {
     this.file = f;
   }
 

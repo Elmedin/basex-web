@@ -1,6 +1,7 @@
 package org.basex.web.xquery;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public final class BaseXClient {
      * @param post POST map
      *@return the query result
      */
-    public static String query(final String f, final Map get, final Map post) {
+    public static String query(final File f, final Map get, final Map post) {
 
         BufferedReader br = null;
         try {

@@ -29,24 +29,14 @@ public class Html extends PrepareParamsServlet {
     throws ServletException, IOException {
         response.setContentType("text/html");
 
-        final String filename = request.getRequestURI().toString();
-
-        if (!exists(filename)) {
-            throw new ServletException("File " + filename + " not found");
+        File f = requestedFile(request.getRequestURI().toString());
+        if (!f.exists()) {
+            throw new ServletException("File " + f.getName() + " not found");
         }
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write(
-                new InlineXQuery(fPath + filename).eval(get, post));
+                new InlineXQuery(f).eval(get, post));
     }
 
-    /**
-     * Checks whether the file exists.
-     * @param filename file
-     * @return exists?
-     */
-    private boolean exists(final String filename) {
-        File f = new File(fPath + filename);
-        return f.exists();
-    }
 
 }

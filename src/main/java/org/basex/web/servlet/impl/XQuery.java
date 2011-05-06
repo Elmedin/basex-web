@@ -29,24 +29,14 @@ public class XQuery extends PrepareParamsServlet {
     throws ServletException, IOException {
         response.setContentType("text/html");
 
-        final String filename = request.getRequestURI().toString();
-
-        if (!exists(filename)) {
-            throw new ServletException("File " + filename + " not found");
+        File f = requestedFile(request.getRequestURI().toString());
+        if (!f.exists()) {
+            throw new ServletException("File " + f.getName() + " not found");
         }
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(BaseXClient.query(fPath + filename,
+        response.getWriter().write(BaseXClient.query(f,
             get, post));
     }
 
-    /**
-     * If the file exists.
-     * @param filename the file
-     * @return true if exists.
-     */
-    private boolean exists(final String filename) {
-        File f = new File(fPath + filename);
-        return f.exists();
-    }
 
 }

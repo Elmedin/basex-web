@@ -1,5 +1,6 @@
 package org.basex.web.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map.Entry;
 
@@ -93,4 +94,15 @@ public abstract class PrepareParamsServlet extends HttpServlet {
   public abstract void get(final HttpServletRequest req,
       final HttpServletResponse resp, final Map get, final Map post)
   throws ServletException, IOException;
+
+  /**
+   * Checks whether the file exists.
+   * @param filename file
+   * @return File object
+   */
+  protected File requestedFile(final String filename) {
+      File f = new File(fPath + filename);
+      return f;
+  }
+
 }

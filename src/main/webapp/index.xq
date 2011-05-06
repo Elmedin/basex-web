@@ -12,14 +12,13 @@ declare option output:doctype-system "http://www.w3.org/TR/xhtml11/DTD/xhtml11.d
 	<meta name="author" content="Michael Seiferle" />
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
+	<script src="js/libs/modernizr-1.7.min.js" type="text/javascript">/* can't touch this! */</script>
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 	<link type="text/css" rel="stylesheet" href="css/style.css?v=2" />
 	<link type="text/css" rel="stylesheet" media="handheld" href="css/handheld.css?v=2" />
-	<script src="js/libs/modernizr-1.7.min.js" type="text/javascript"></script>  
-</head>
 
+</head>
 <body>
 <div id="container">
 	<header>
