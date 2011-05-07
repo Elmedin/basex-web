@@ -3,7 +3,6 @@ package org.basex.web.servlet;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map.Entry;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,16 +18,13 @@ import org.basex.util.Token;
 /**
  * This class handles GET or POST requests and prepares a Map with the
  * respective values.
- *
  * @author BaseX Team 2005-11, BSD License
  * @author Michael Seiferle <ms@basex.org>
  */
 public abstract class PrepareParamsServlet extends HttpServlet {
   /** Version. */
   private static final long serialVersionUID = 8548004356377035911L;
-  /**
-   * the web root: *TODO* this path might be configurable in future version.
-   */
+  /** the web root: *TODO* this path might be configurable in future version. */
   protected static String fPath = "src/main/webapp";
 
   @Override
@@ -77,7 +73,7 @@ public abstract class PrepareParamsServlet extends HttpServlet {
   @Override
   public final void doPost(final HttpServletRequest req,
       final HttpServletResponse resp) throws IOException {
-    // TODO
+  // TODO
   }
 
   /**
@@ -93,7 +89,7 @@ public abstract class PrepareParamsServlet extends HttpServlet {
    */
   public abstract void get(final HttpServletRequest req,
       final HttpServletResponse resp, final Map get, final Map post)
-  throws ServletException, IOException;
+      throws ServletException, IOException;
 
   /**
    * Checks whether the file exists.
@@ -101,8 +97,7 @@ public abstract class PrepareParamsServlet extends HttpServlet {
    * @return File object
    */
   protected File requestedFile(final String filename) {
-      File f = new File(fPath + filename);
-      return f;
+    return new File(fPath + filename);
   }
 
 }

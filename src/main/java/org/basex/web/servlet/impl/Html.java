@@ -2,11 +2,8 @@ package org.basex.web.servlet.impl;
 
 import java.io.File;
 import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.basex.query.item.map.Map;
 import org.basex.web.parser.InlineXQuery;
 import org.basex.web.servlet.PrepareParamsServlet;
@@ -25,17 +22,20 @@ public class Html extends PrepareParamsServlet {
 
     @Override
     public final void get(final HttpServletRequest request,
-            final HttpServletResponse response, final Map get, final Map post)
-    throws ServletException, IOException {
+        final HttpServletResponse response, final Map get, final Map post)
+        throws IOException {
         response.setContentType("text/html");
 
-        File f = requestedFile(request.getRequestURI().toString());
-        if (!f.exists()) {
-            throw new ServletException("File " + f.getName() + " not found");
+        final String uri = request.getRequestURI();
+        final File f = requestedFile(uri);
+        if(!f.exists()) {
+          response.sendError(HttpServletResponse.SC_NOT_FOUND,
+              "The file '" + uri + "' can't be found on the server.");
+        } else {
+          response.setStatus(HttpServletResponse.SC_OK);
+          response.getWriter().write(
+                  new InlineXQuery(f).eval(get, post));
         }
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(
-                new InlineXQuery(f).eval(get, post));
     }
 
 
