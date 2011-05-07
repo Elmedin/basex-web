@@ -1,9 +1,9 @@
 package org.basex.web.servlet;
 
 import java.io.File;
+import java.io.IOError;
 import java.io.IOException;
 import java.util.Map.Entry;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,21 +28,28 @@ public abstract class PrepareParamsServlet extends HttpServlet {
   /** the web root: *TODO* this path might be configurable in future version. */
   private final String fPath;
 
-  /**
-   * Constructor.
-   * @param serverRoot the server's root directory
-   * @throws IOException if the root directory can't be resolved
-   */
-  public PrepareParamsServlet(final File serverRoot) throws IOException {
-    fPath = serverRoot.getCanonicalPath();
+  /** Constructor. */
+  public PrepareParamsServlet() {
+    try {
+      fPath = new File("src/main/webapp").getCanonicalPath();
+    } catch(final IOException e) {
+      // should never happen
+      throw new IOError(e);
+    }
   }
 
   @Override
   protected final void doGet(final HttpServletRequest req,
-      final HttpServletResponse resp) throws IOException, ServletException {
+      final HttpServletResponse resp) throws IOException {
+
     final Map get = getMap(req);
     final Map post = getPost(req);
-    get(req, resp, get, post);
+
+    try {
+      get(resp, requestedFile(req.getRequestURI()), get, post);
+    } catch(final HttpException e) {
+      resp.sendError(e.getStatus(), e.getReason());
+    }
   }
 
   /**
@@ -90,16 +97,14 @@ public abstract class PrepareParamsServlet extends HttpServlet {
    * Performs the actual get, this is needed to allow
    * {@link PrepareParamsServlet} collecting the parameters before delegating
    * the actual get or post of the implementation.
-   * @param req request
    * @param resp response object
+   * @param f requested file
    * @param get GET map
    * @param post POST map
-   * @throws ServletException servlet
-   * @throws IOException io
+   * @throws IOException I/O exception
    */
-  public abstract void get(final HttpServletRequest req,
-      final HttpServletResponse resp, final Map get, final Map post)
-      throws ServletException, IOException;
+  public abstract void get(final HttpServletResponse resp, final File f,
+      final Map get, final Map post) throws IOException;
 
   /**
    * Checks whether the file exists.
@@ -107,7 +112,7 @@ public abstract class PrepareParamsServlet extends HttpServlet {
    * @return File object
    * @throws HttpException HTTP exception
    */
-  protected File requestedFile(final String file) throws HttpException {
+  private File requestedFile(final String file) throws HttpException {
     final File f = new File(fPath, file);
     if(!f.exists()) throw new HttpException(HttpServletResponse.SC_NOT_FOUND,
         "The file '" + file + "' doesn't exist on the server.");
