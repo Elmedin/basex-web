@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.basex.query.item.map.Map;
 import org.basex.web.servlet.PrepareParamsServlet;
 import org.basex.web.xquery.BaseXClient;
+import org.eclipse.jetty.http.HttpException;
 
 /**
  * This class parses complete XQuery files or modules and returns their result.
@@ -16,6 +17,14 @@ import org.basex.web.xquery.BaseXClient;
  * @author Michael Seiferle <ms@basex.org>
  */
 public class XQuery extends PrepareParamsServlet {
+
+  /**
+   * Constructor.
+   * @throws IOException if the server root can't be resolved
+   */
+  public XQuery() throws IOException {
+    super(new File("src/main/webapp"));
+  }
 
   /** This is me, your version. */
   private static final long serialVersionUID = -7694236920689548933L;
@@ -27,14 +36,16 @@ public class XQuery extends PrepareParamsServlet {
     response.setContentType("text/html");
 
     final String uri = request.getRequestURI();
-    final File f = requestedFile(uri);
-    if(!f.exists()) {
-      response.sendError(HttpServletResponse.SC_NOT_FOUND,
-          "The file '" + uri + "' can't be found on the server.");
-    } else {
-      response.setStatus(HttpServletResponse.SC_OK);
-      response.getWriter().write(BaseXClient.query(f, get, post));
+    final File f;
+    try {
+      f = requestedFile(uri);
+    } catch(final HttpException e) {
+      response.sendError(e.getStatus(), e.getReason());
+      return;
     }
+
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.getWriter().write(BaseXClient.query(f, get, post));
   }
 
 }

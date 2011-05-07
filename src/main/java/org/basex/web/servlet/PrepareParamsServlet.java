@@ -14,6 +14,7 @@ import org.basex.query.item.Seq;
 import org.basex.query.item.Str;
 import org.basex.query.item.map.Map;
 import org.basex.util.Token;
+import org.eclipse.jetty.http.HttpException;
 
 /**
  * This class handles GET or POST requests and prepares a Map with the
@@ -25,7 +26,16 @@ public abstract class PrepareParamsServlet extends HttpServlet {
   /** Version. */
   private static final long serialVersionUID = 8548004356377035911L;
   /** the web root: *TODO* this path might be configurable in future version. */
-  protected static String fPath = "src/main/webapp";
+  private final String fPath;
+
+  /**
+   * Constructor.
+   * @param serverRoot the server's root directory
+   * @throws IOException if the root directory can't be resolved
+   */
+  public PrepareParamsServlet(final File serverRoot) throws IOException {
+    fPath = serverRoot.getCanonicalPath();
+  }
 
   @Override
   protected final void doGet(final HttpServletRequest req,
@@ -93,11 +103,25 @@ public abstract class PrepareParamsServlet extends HttpServlet {
 
   /**
    * Checks whether the file exists.
-   * @param filename file
+   * @param file file
    * @return File object
+   * @throws HttpException HTTP exception
    */
-  protected File requestedFile(final String filename) {
-    return new File(fPath + filename);
+  protected File requestedFile(final String file) throws HttpException {
+    final File f = new File(fPath, file);
+    if(!f.exists()) throw new HttpException(HttpServletResponse.SC_NOT_FOUND,
+        "The file '" + file + "' doesn't exist on the server.");
+    try {
+      final File canon = f.getCanonicalFile();
+      if(!canon.toString().startsWith(fPath)) throw new HttpException(
+          HttpServletResponse.SC_FORBIDDEN, "The requested file '"
+          + file + "' isn't below the server root.");
+      return canon;
+    } catch(final IOException ioe) {
+      // TODO too much information / unsafe?
+      throw new HttpException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+          ioe.getLocalizedMessage());
+    }
   }
 
 }
