@@ -27,9 +27,23 @@
  
       <article class="example">
         <h2>Opening Databases</h2>
-        
+        <p>When it comes to jobs that, are rather simple but still take too much time, here&#x27;s one of them:</p>
+          <ul>
+            <li>Import a document</li>
+            <li>Write a simple database query</li>
+            <li>Return a HTML style unordered list</li>
+            <li>Rewrite that query to filter your results</li>
+            </ul>
+        <p>How many lines of PHP or Ruby do you think you would need? Maybe 20? At least if your keeping it small and simple.</p>
+        <p>Above you see what the hole thing in XQuery looks like: <br />
+          <em>Importing</em>. <em>Querying</em>. <em>HTML Results</em>. <em>Filtering</em>.</p>
+<p>          <strong>Oh, and producing valid (X)HTML comes for free.</strong></p>
+          
+          
        <div class="subcolumns">
-         <div class="left"> <pre>
+
+         <div class="left">        
+            <h2>The Code</h2><code class="qry"><pre>
 &lt;ul&gt;
 &lt;?xq 
   for $city in doc(&#x27;http://files.basex.org/xml/factbook.xml&#x27;)//city
@@ -38,34 +52,53 @@
   return &lt;li&gt;{$name}&lt;/li&gt;
 ?&gt;
 &lt;/ul&gt;
-          
-        </pre>
-        <p>
-        Yes you saw right, we directly open a XML resource by it&#x27;s URL &ndash; sure this takes some time. So let&#x27;s try it local.</p>
+          </pre>
+        </code>
+        </div>
+          <div class="right">
+            <h2>The result</h2>
+
+
+          <ul class="result">
+        <!-- change the following line, so BaseX uses a local instance -->
+<?xq 
+        for $city in doc('http://localhost:8080/resource/factbook.xml')//city
+  			  let $name := $city/name[1]/text()
+  			  where starts-with($name, 'Kr')
+        return <li>{$name}</li>
+?>
+          </ul>
+          <p><em>(the above result is evaluated live!)</em></p>
+          </div></div>
+          <p>
+      <h3>A note on the <code>doc()</code> function</h3>
+
+        Yes you saw right, we directly opened a XML resource by it&#x27;s URL &ndash; sure this takes some time. 
+        But BaseX also allows us to create a local persistent storage.</p>
 <hr />
-<h3>Persistent XML Storage</h3>
+<h2>Persistent XML Storage</h2>
 	<p>
-        Download the <a href="http://files.basex.org/xml/factbook.xml" title="">factbook.xml</a> file and create a local database named <code>factbook</code> 
+	    To create a database, as you would for example with MySQL, you may either start with an empty database or you create one from a file.<br />
+	    We will now create one from a file, so let&#x27;s get that file.</p>
+        <h3>Creating the Databse</h3>
+        <p>Download the <a href="http://files.basex.org/xml/factbook.xml" title="">factbook.xml</a> file and create a local database named <code>factbook</code> 
         using the <a href="http://docs.basex.org/wiki/GUI_Tutorial" title="BaseX | GUI">BaseX GUI</a>.
         </p>
+        <h3>Rewriting the query</h3>
         <p>
-        Then modify the query on the current page (<code>src/main/webapp/databases.html</code>) to use: <code>doc('factbook')</code> to stop the database from recreating the database anytime
-        you open your website.</p>
-              <br />
+        Then modify the query on the current page (<code>src/main/webapp/databases.html</code>) to use: 
+        <code class="qry">doc('factbook')</code> 
+        this will stop BaseX from downloading the XML source file everytime you access this page.</p>
+
+        <h3>Reading on</h3>
+              <p>Next, you may want to add some interactivity, web applications live from <em>user-input</em> and 
+                providing different content to different users.</p>
+        			<hr style="clear:both;"/>
+        			Click here to read more about how to add interactivity: <a href="Get-and-Post.html" id="" title="Get-and-Post">GET &amp; POST Parameters</a>
+              <hr />      <a href="index.html" id="" title="Back">Back</a>
+
         </div>
-        <div class="right">
-        <strong>Yields</strong><br />
-        <ul><?xq 
-      for $city in doc('http://localhost:8080/resource/factbook.xml')//city
-			  let $name := $city/name[1]/text()
-			  where starts-with($name, 'Kr')
-      return <li>{$name}</li>
-        ?>
-        </ul></div></div>
       </article>
-			<hr style="clear:both;"/>
-			Click here to read more about how to add interactivity: <a href="Get-and-Post.html" id="" title="Get-and-Post">GET &amp; POST Parameters</a>
-      <hr />      <a href="index.html" id="" title="Back">Back</a>
 		</div>
 
 		<footer>

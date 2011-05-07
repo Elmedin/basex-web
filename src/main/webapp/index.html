@@ -40,18 +40,27 @@
 <hr />
       <article class="example">
         <h2>Primer</h2>
-        <p>we won&#x27;t start with &quot;hello world&quot; here &ndash; as this would be too <em>trivial</em>!<br />
-				Let us start by counting from <code>1 to 10</code>:
+        <p>we won&#x27;t start with &quot;hello world&quot; here &ndash; as this would be too <em>trivial</em>...right?<br />
+        instead we start, more advanced, by counting from <code>1 to 20</code>:
 				</p>
-        <pre>&lt;?xq 1 to 10?&gt;</pre>
-        <strong>Gives</strong><br />
-<code class="result">
-        <?xq 1 to 10?>
-</code><br /><br />
-        Pretty nice, but not too useful so far.<br />
-        What it does is replace the part between the &lt;?xq &hellip; ?&gt; with the evaluated result of XQuery.<br />
-        Sure enough XQuery is a full-fledged programming language, but comes to full potential when used in conjunction with databases.
-        So here we go:
+        <code class="qry">&lt;?xq 1 to 20?&gt;</code>
+<p>        added anywhere inside your HTML file, will be rendered as:
+</p><code class="result">
+        <?xq 1 to 20?>
+</code>
+<h3>What happened</h3>
+        What the web server did, was replace the part between the <code class="qry">&lt;?xq <strong>&hellip;</strong> ?&gt;</code> with the evaluated result of that XQuery.
+        <h2>Why XQuery</h2>
+<p>        This already saved us a lot of typing, and counting, but XQuery can be far more useful</p>
+        <ul>
+        <li>XQuery is a <strong>database query language</strong>, similar to SQL in some ways &ndash; and luckily very different in other ways.</li>
+        <li>XQuery actually <em>knows</em> what a tag is, thus it never produces invalid (X)HTML</li>
+        <li>
+        XQuery is a full fledged programming language
+        </li>
+        <li>XQuery has strong full-text capabilities</li>
+        
+        </ul>
       </article>
       <hr />
 Read on the learn more about <a href="databases.html" title="Handling Databases">handling and querying databases</a>.

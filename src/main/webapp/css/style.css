@@ -115,12 +115,30 @@ h1 {
   float:left;
   width:48%;
   margin-left:1%;
-  background:#cf1;
+
   display:block;
 }
+code {
+  font-size:90%;
+}
+code.qry {
+	background-color:#cfcfcf;
+
+	border:2px solid #9f9f9f;
+	padding:2px;
+	margin:15px;
+	display:table-cell;
+	
+
+}
+
 code.result {
 	background-color:#cf1;
 	padding:2px;
+	margin:15px;
+	display:table-cell;
+	border:2px solid #cfcfcf;
+
 }
 .example {
   clear:both;
@@ -128,11 +146,19 @@ code.result {
 }
 
 
+h2,h3 {
+  margin:1em 0 0.7em 0;
+}
 
-
-
-
-
+p{
+  line-height:140%;
+  margin-bottom:0.6em;
+  clear:both;
+}
+body {
+  font-family: Tahoma, Helvetica, Arial;
+}
+em {font-style:italic;}
 
 .ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; direction: ltr; }
 .hidden { display: none; visibility: hidden; }

@@ -32,12 +32,12 @@
 				</p>
 				<p>The following section provides you with some examples that show the usage of <code>$GET</code> inside your own applications:
 
-        <pre>&lt;?xq $GET(&#x27;index&#x27;)?&gt;</pre>
+        <code class="qry">&lt;?xq $GET(&#x27;index&#x27;)?&gt;</code>
         <br />
 <?xq 
 	let $in := $GET('index')
 		return 	if( exists($in) ) 
-						then	<div>Gives <code class="result">{concat( " ", $in)} </code>,
+						then	<div><code class="result">{ $in} </code>
 									<a href="?">Reload the page without parameter</a></div>
 						else
           		<div><code>$GET('index')</code> not set. <a href="?index=hello world">  Click here to reload the page</a> and set a <code>$GET('index')</code> Parameter</div>
