@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.basex</groupId>
 	<artifactId>basex-web</artifactId>
-	<version>6.6.2-SNAPSHOT</version>
+	<version>0.6.6.2</version>
 	<name>BaseX Web Application Server</name>
 	<properties>
 		<jettyVersion>7.4.0.v20110414</jettyVersion>
@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>org.basex</groupId>
 			<artifactId>basex</artifactId>
-			<version>6.6.2-SNAPSHOT</version>
+			<version>6.6.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -42,6 +42,11 @@
 			<id>jetty</id>
 			<name>Jetty @ Eclipse</name>
 			<url>http://repo2.maven.org/maven2/org/eclipse/jetty/jetty-distribution/</url>
+		</repository>
+		<repository>
+			<id>basex</id>
+			<name>BaseX Maven Repository</name>
+			<url>http://files.basex.org/maven</url>
 		</repository>
 	</repositories>
 
