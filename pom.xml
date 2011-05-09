@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.basex</groupId>
 	<artifactId>basex-web</artifactId>
-	<version>6.6.2-SNAPSHOT</version>
+	<version>0.6.6.2</version>
 	<name>BaseX Web Application Server</name>
 	<properties>
 		<jettyVersion>7.4.0.v20110414</jettyVersion>
@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>org.basex</groupId>
 			<artifactId>basex</artifactId>
-			<version>6.6.2-SNAPSHOT</version>
+			<version>6.6.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
